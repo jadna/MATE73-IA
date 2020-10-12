@@ -20,7 +20,6 @@ class Graph:
         self.graph[v].append(u) 
         graph = self.graph
 
-
         return graph
 
 
@@ -37,11 +36,17 @@ class Graph:
             visited.add(current)
             for neighbor in graph[current]:
                 if neighbor == end:
-                    return path + [current, neighbor]
+                    print("path + [current, neighbor]: {}".format(path + [current, neighbor]))
+                    result = path + [current, neighbor]
+
+                    return result
+                    
                 if neighbor in visited:
                     continue
                 queue.append((neighbor, path + [current]))
-                visited.add(neighbor)   
+                visited.add(neighbor)  
+                print("visited: {}".format(visited))
+                print("queue: {}".format(queue)) 
         return None  
 
 
@@ -63,5 +68,6 @@ start, end = input().split()
 
 
 bfs_result = bfs.bfs(graph,start, end)
-print(bfs_result)
+result = "-".join(bfs_result)
+print(result)
 

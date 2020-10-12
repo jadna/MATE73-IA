@@ -3,14 +3,18 @@ from collections import defaultdict
 # Nó e Relações unidirecionais
 entry = input().rstrip()
 nodes, rel = entry.split(' ')
+rel = int(rel)
 
 graph = defaultdict(list)
 
 # Insere relações
-for i in range(1, int(rel)+1):
+i = 1
+while i <= rel:
     entry = input().rstrip()
     a, b = entry.split(' ')
     graph[str(a)].append(str(b))
+
+    i += 1
 
 print(graph)
 # Le início e objetivo

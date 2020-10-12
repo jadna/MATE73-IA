@@ -1,7 +1,7 @@
 from collections import defaultdict
 from collections import deque
 
-def bfs(graph, start, end):
+def dfs(graph, start, end):
     """ Encontra o menor caminho entre start e end
     Se o caminho não existir retorn none """
     if start == end:
@@ -56,7 +56,7 @@ while i <= rel:
 entry = input().rstrip()
 start, end = entry.split(' ')
 
-bfs_result = bfs(graph, start, end)
-result = "-".join(bfs_result)
+dfs_result = dfs(graph, start, end)
+result = "-".join(dfs_result)
 print(result)
 
