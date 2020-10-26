@@ -1,73 +1,62 @@
 from collections import defaultdict
 from collections import deque
 
-class Graph:
-    
-    def __init__(self, n):
+def bfs(graph, start, end):
+    """ Encontra o menor caminho entre start e end
+    Se o caminho não existir retorn none """
+    if start == end:
+        return [start]
 
-        """ Numero de vertices """
-        self.vertices = n
-        
-        """ Dicionario default do Grafo"""
-        self.graph = defaultdict(list)
+    visited = {start}
+    queue = deque([(start, [])])
 
-    def addEdge(self, u, v):
+    while queue:
+        current, path = queue.popleft()
+        visited.add(current)
+        if current == end:
+            result = path + [current]
+            return result
 
-        """ Função que add aresta ao vertice 
-            O grafo é direcionado"""
-        self.graph[u].append(v) 
-        #self.graph[v] = list()
-        self.graph[v].append(u) 
-        graph = self.graph
+        for neighbor in graph[current]:
+            if neighbor == end:
+                result = path + [current, neighbor]
 
-        return graph
-
-
-    def bfs(self, graph, start, end):
-        """ Encontra o menos caminho entre start e end
-        Se o caminho não existir retorn none """
-        if start == end:
-            return [start]
-        visited = {start}
-        queue = deque([(start, [])])
-
-        while queue:
-            current, path = queue.popleft()
-            visited.add(current)
-            for neighbor in graph[current]:
-                if neighbor == end:
-                    print("path + [current, neighbor]: {}".format(path + [current, neighbor]))
-                    result = path + [current, neighbor]
-
-                    return result
-                    
-                if neighbor in visited:
-                    continue
-                queue.append((neighbor, path + [current]))
-                visited.add(neighbor)  
-                print("visited: {}".format(visited))
-                print("queue: {}".format(queue)) 
-        return None  
+                result = list(visited)
+                result.append(neighbor)
+                result.sort(key=int)
+            
+                return result
+                
+            if neighbor in visited:
+                continue
+            queue.append((neighbor, path + [current]))
+            visited.add(neighbor)  
+            #print("visited: {}".format(visited))
+            #print("queue: {}".format(queue)) 
+    return None
 
 
-vertices, edge = input().split()
-vertices = int(vertices)
-edge = int(edge)
+# Nó e Relações unidirecionais
+entry = input().rstrip()
+nodes, rel = entry.split(' ')
+rel = int(rel)
 
-bfs = Graph(vertices)
+graph = defaultdict(list)
 
-i = 0
-while i < edge:
-    u, v = input().split()
-    graph = bfs.addEdge(u, v)
+# Insere relações
+i = 1
+while i <= rel:
+    entry = input().rstrip()
+    a, b = entry.split(' ')
+    graph[str(a)].append(str(b))
+
     i += 1
 
-print(graph)
-""" Define os nos de incio e fim e imprime os caminhos """
-start, end = input().split()
+# Le início e objetivo
+entry = input().rstrip()
+start, end = entry.split(' ')
 
-
-bfs_result = bfs.bfs(graph,start, end)
+bfs_result = bfs(graph, start, end)
 result = "-".join(bfs_result)
 print(result)
 
