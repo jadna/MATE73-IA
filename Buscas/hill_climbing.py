@@ -62,7 +62,7 @@ if __name__ == '__main__':
         entry = input().rstrip()   
         x, y = entry.split(' ')
 
-    print(graph)
+    #print(graph)
     visited = []
     hill_climbing(x, y, graph, visited, 0)
     print('-'.join(visited))

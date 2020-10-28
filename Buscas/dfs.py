@@ -1,62 +1,52 @@
 from collections import defaultdict
-from collections import deque
 
-def dfs(graph, start, end):
-    """ Encontra o menor caminho entre start e end
-    Se o caminho não existir retorn none """
-    if start == end:
-        return [start]
+def __dfs(graph, node, goal, visitados):
+    
+    if node == goal:
+        return [node]
+    
+    if node in graph:
+        for neighbor in graph[node]:
+           
+            if neighbor not in visitados:
+                visitados.append( neighbor )
+                path = __dfs(graph, neighbor, goal, visitados)
 
-    visited = {start}
-    queue = deque([(start, [])])
-
-    while queue:
-        current, path = queue.popleft()
-        visited.add(current)
-        if current == end:
-            result = path + [current]
-            return result
-
-        for neighbor in graph[current]:
-            if neighbor == end:
-                result = path + [current, neighbor]
-
-                result = list(visited)
-                result.append(neighbor)
-                result.sort(key=int)
+                if path is not None:
+                    #path.insert(0, node)
+                    path = visitados
+                    return path
             
-                return result
-                
-            if neighbor in visited:
-                continue
-            queue.append((neighbor, path + [current]))
-            visited.add(neighbor)  
-            #print("visited: {}".format(visited))
-            #print("queue: {}".format(queue)) 
     return None
+    
+def dfs(graph, start, goal):
+
+    visitados = []
+    visitados.append(start)
+
+    resultado = __dfs(graph, start, goal, visitados)
+    print("-".join(resultado))
+    
+    return __dfs(graph, start, goal, visitados)
+
 
 
 # Nó e Relações unidirecionais
 entry = input().rstrip()
 nodes, rel = entry.split(' ')
-rel = int(rel)
+#rel = int(rel)
 
 graph = defaultdict(list)
 
 # Insere relações
-i = 1
-while i <= rel:
+for i in range(int(rel)):
     entry = input().rstrip()
     a, b = entry.split(' ')
     graph[str(a)].append(str(b))
 
-    i += 1
 
 # Le início e objetivo
 entry = input().rstrip()
-start, end = entry.split(' ')
+start, goal = entry.split(' ')
 
-dfs_result = dfs(graph, start, end)
-result = "-".join(dfs_result)
-print(result)
-
+dfs(graph, start, goal)
